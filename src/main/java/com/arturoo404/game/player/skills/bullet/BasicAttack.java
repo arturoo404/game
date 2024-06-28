@@ -18,6 +18,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class BasicAttack {
 
@@ -46,8 +47,9 @@ public class BasicAttack {
         skillsAnimationController.initBasicAttackAnimation();
         skillsMapCollision = new SkillsMapCollision(player.getMovement().getBlocks(), this);
         skillsMapCollision.init();
-        image = new Image(getClass().getResourceAsStream("/txt/skills/basicAttack.png"));
+        image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/txt/skills/basicAttack.png")));
         Thread thread = new Thread(() -> {
+            System.out.println("init");
             Timeline basicAttack = new Timeline(new KeyFrame(Duration.millis(50), actionEvent -> {
                 if (play && stack){
                     bulletSkillStatsController.countBasicAttackStack();
@@ -84,6 +86,12 @@ public class BasicAttack {
                 case A -> bullet.getSkill().setX(bullet.getSkill().getX() - 15);
                 case D -> bullet.getSkill().setX(bullet.getSkill().getX() + 15);
                 case W -> bullet.getSkill().setY(bullet.getSkill().getY() - 15);
+            }
+
+            bullet.setSkillRange(bullet.getSkillRange() + 15);
+            if (bullet.getSkillRange() > player.getSkillStats().getBasicAttackRange()){
+                bullet.getTimeline().stop();
+                player.getAnchorPane().getChildren().remove(bullet.getSkill());
             }
         }));
 
@@ -134,7 +142,6 @@ public class BasicAttack {
      */
     private WritableImage bulletImage(BulletAttackObject bulletAttackObject){
         return switch (bulletAttackObject.getKeyCode()) {
-            case S -> writableImage(75, 24,  56, 127);
             case A -> writableImage(40, 260, 127, 56);
             case D -> writableImage(20, 453, 127, 56);
             case W -> writableImage(75, 620, 56, 127);
@@ -181,6 +188,9 @@ public class BasicAttack {
      */
     public void update(List<BulletAttackObject> attackObject){
         basickAttackList.removeAll(attackObject);
-        attackObject.forEach(a -> player.getAnchorPane().getChildren().remove(a.getSkill()));
+        attackObject.forEach(a -> {
+            a.getTimeline().stop();
+            player.getAnchorPane().getChildren().remove(a.getSkill());
+        });
     }
 }

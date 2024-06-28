@@ -15,4 +15,5 @@ public class BulletAttackObject {
     private Bullet bullet;
     private KeyCode keyCode;
     private int animationFrame;
+    private int skillRange;
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class PlayerStats {
 
+    private int basicAttackRange = 200;
     private double attackSpeed = 1;
     private int maxHealth = 100;
     private double currentHealth = 100;
