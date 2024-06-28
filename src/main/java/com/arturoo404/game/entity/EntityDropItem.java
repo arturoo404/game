@@ -11,6 +11,6 @@ import lombok.*;
 public class EntityDropItem {
 
     private ItemName itemName;
-    private int dropChance;
+    private double dropChance;
     private int dropQuantity;
 }

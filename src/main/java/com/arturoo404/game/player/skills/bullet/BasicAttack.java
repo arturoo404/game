@@ -49,7 +49,6 @@ public class BasicAttack {
         skillsMapCollision.init();
         image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/txt/skills/basicAttack.png")));
         Thread thread = new Thread(() -> {
-            System.out.println("init");
             Timeline basicAttack = new Timeline(new KeyFrame(Duration.millis(50), actionEvent -> {
                 if (play && stack){
                     bulletSkillStatsController.countBasicAttackStack();

@@ -1,6 +1,7 @@
 package com.arturoo404.game.item;
 
 import com.arturoo404.game.entity.Entity;
+import com.arturoo404.game.entity.EntityDropItem;
 import com.arturoo404.game.file.CustomFileReader;
 import com.google.gson.internal.LinkedTreeMap;
 import javafx.scene.image.Image;
@@ -43,8 +44,11 @@ public class ItemAction {
 
     public void createItemAtMap(Entity entity){
         entity.getDropItems()
-                .forEach(dropItem -> itemsAtMap
-                        .add(new Item(getItemByName(dropItem.getItemName()), generateItemAtMapRect(entity))));
+                .forEach(dropItem -> {
+                    if (calculateItemDropRate(dropItem)){
+                        itemsAtMap.add(new Item(getItemByName(dropItem.getItemName()), generateItemAtMapRect(entity)));
+                    }
+                });
     }
 
     private Rectangle generateItemAtMapRect(Entity entity){
@@ -56,5 +60,11 @@ public class ItemAction {
 
     public ItemAction(AnchorPane pane) {
         this.pane = pane;
+    }
+
+    private boolean calculateItemDropRate(EntityDropItem entityDropItem){
+        Random random = new Random();
+        int randomNumber = random.nextInt(100) + 1;
+        return randomNumber <= entityDropItem.getDropChance();
     }
 }

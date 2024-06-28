@@ -20,7 +20,6 @@ public class HealAbility {
             healCd = false;
             countCooldownReduction();
         } else if (start){
-            System.out.println("skill is on cd");
         }
     }
 
